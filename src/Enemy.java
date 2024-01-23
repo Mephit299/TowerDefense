@@ -2,15 +2,16 @@ import java.awt.*;
 
 public class Enemy {
     private int type = 1;
-    private int speed;
+    private double speed = 1;
     private int positionX = 200;
     private int positionY = 200;
     private double distanceTraveled = 0;
     private int currentTrack = 0;
-    private Color[] colors = {Color.cyan, Color.green, Color.blue, Color.green, Color.yellow, Color.pink};
+    private Color[] colors = {Color.cyan, Color.red, Color.blue, Color.green, Color.yellow, Color.pink};
 
     public Enemy(int type) {
         this.type = type;
+        this.speed = (1 + type *0.5);
     }
 
     public void draw(Graphics g){
@@ -26,7 +27,7 @@ public class Enemy {
         return type;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 

@@ -16,14 +16,11 @@ public class Track {
         dx = endX - startX;
         dy = endY - startY;
         try {
-            angle = Math.atan(dy/dx);
+            angle = Math.atan((double) dy/dx);
         } catch (Exception e) {
             angle = Math.PI/2;
         }
         length = Math.sqrt(Math.pow(dx,2)+ Math.pow(dy,2));
-
-
-
     }
 
     public int getStartX() {

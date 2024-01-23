@@ -79,7 +79,11 @@ public class Game extends Canvas implements Runnable {
     }
 
     public synchronized void start() {
+        enemies.add(new Enemy(1));
+        enemies.add(new Enemy(2));
         enemies.add(new Enemy(3));
+        enemies.add(new Enemy(4));
+        enemies.add(new Enemy(5));
         running = true;
         thread = new Thread(this);
         thread.start();
