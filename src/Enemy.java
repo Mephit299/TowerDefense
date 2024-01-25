@@ -7,21 +7,20 @@ public class Enemy {
     private int positionY = 200;
     private double distanceTraveled = 0;
     private int currentTrack = 0;
+    private int diameter = 20;
     private Color[] colors = {Color.cyan, Color.red, Color.blue, Color.green, Color.yellow, Color.pink};
 
     public Enemy(int type) {
         this.type = type;
         this.speed = (1 + type *0.5);
+        diameter += 3*type;
     }
 
     public void draw(Graphics g){
         g.setColor(colors[type]);
-        g.fillArc(positionX, positionY,20 +3*type,20 +3*type, 0, 360);
-
+        g.fillArc(positionX - diameter/2, positionY- diameter/2,diameter,diameter, 0, 360);
 
     }
-
-    public void update(){}
 
     public int getType() {
         return type;

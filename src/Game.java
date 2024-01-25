@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.concurrent.TransferQueue;
 
 public class Game extends Canvas implements Runnable {
-    public static int WIDTH = 1080;
-    public static int HEIGHT = 720;
+    public static int WIDTH = 1920;
+    public static int HEIGHT = 1080;
     public static String title = "A ball!";
     public static BufferedImage icon;
 
@@ -24,10 +24,12 @@ public class Game extends Canvas implements Runnable {
     private ArrayList <Enemy> enemies = new ArrayList <Enemy>();
     private Map map = new Map();
     private int money = 650;
+    public ArrayList <Tower> towers = new ArrayList<Tower>();
 
 
     public void draw(Graphics g) {
         g.clearRect(0, 0, getWidth(), getHeight());
+        map.draw(g);
         for (int i = 0; i< enemies.size(); i++){
             enemies.get(i).draw(g);
         }

@@ -1,20 +1,18 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Map {
-    private int length = 0;
     private ArrayList <Track> map = new ArrayList <Track>();
     private int hp = 50;
 
 
     public Map(){
-        map.add(new Track(0,1000,200,600));
-        map.add(new Track(1000, 500, 600, 0));
+        map.add(new Track(20,1000,200,600));
+     //   map.add(new Track(1000, 500, 600, 20));
     }
 
     public Map(ArrayList<Track> map) {
         this.map = map;
-        for (int i =0; i < map.size(); i++)
-            length += map.get(i).getLength();
     }
 
     public ArrayList<Enemy> move(ArrayList <Enemy> enemies){
@@ -43,5 +41,10 @@ public class Map {
 
         }
         return (enemies);
+    }
+
+    public void draw(Graphics g){
+        for (int i = 0; i < map.size(); i++)
+            map.get(i).draw(g);
     }
 }
