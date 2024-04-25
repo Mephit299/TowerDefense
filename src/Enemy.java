@@ -17,8 +17,14 @@ public class Enemy {
     }
 
     public void draw(Graphics g){
-        g.setColor(colors[type]);
+        try {
+            g.setColor(colors[type]);
+        }catch (Exception e) {
+            g.setColor(colors[0]);
+        }
+
         g.fillArc(positionX - diameter/2, positionY- diameter/2,diameter,diameter, 0, 360);
+
 
     }
 
@@ -68,5 +74,9 @@ public class Enemy {
 
     public void setCurrentTrack(int currentTrack) {
         this.currentTrack = currentTrack;
+    }
+
+    public int getDiameter() {
+        return diameter;
     }
 }

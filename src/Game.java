@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.TransferQueue;
 
 public class Game extends Canvas implements Runnable {
@@ -25,6 +26,9 @@ public class Game extends Canvas implements Runnable {
     private Map map = new Map();
     private int money = 650;
     public ArrayList <Tower> towers = new ArrayList<Tower>();
+    public ArrayList <Tower> placeTower = new ArrayList<Tower>();
+    public ArrayList <Projectile> projectiles = new ArrayList<Projectile>();
+    public int[] mouse = new int[2];
 
 
     public void draw(Graphics g) {
@@ -33,13 +37,39 @@ public class Game extends Canvas implements Runnable {
         for (int i = 0; i< enemies.size(); i++){
             enemies.get(i).draw(g);
         }
+        for (int i = 0; i < projectiles.size(); i++){
+            projectiles.get(i).draw(g);
+        }
+        for (int i = 0; i < towers.size(); i++){
+            towers.get(i).draw(g);
+        }
+        try {
+            placeTower.get(0).placingTower(g, mouse);
+        } catch (Exception e){}
  //       ball.draw(g);
     }
 
     private void update() {
         enemies = map.move(enemies);
+        try {
+
+            if (!placeTower.get(0).checkCollision(map))
+            placeTower.get(0).towerTowerCollision(towers);
+        } catch (Exception e){}
+        for (int i = 0; i < towers.size(); i++){
+            towers.get(i).enemyInRange(enemies, projectiles);
+        }
+        for (int i = 0; i < projectiles.size(); i++){
+            projectiles.get(i).update();
+            if (projectiles.get(i).removeProjectile()){
+                projectiles.remove(i);
+                i--;
+            }
+        }
 //        ball.update();
     }
+
+    private JFrame frame;
 
     public Game() {
    //     ball = new Ball();
@@ -51,7 +81,7 @@ public class Game extends Canvas implements Runnable {
             e.printStackTrace();
         }
         setSize(WIDTH, HEIGHT);
-        JFrame frame = new JFrame(title);
+        frame = new JFrame(title);
         frame.setIconImage(icon);
         frame.add(this);
         frame.addKeyListener(new MyKeyListener());
@@ -81,14 +111,17 @@ public class Game extends Canvas implements Runnable {
     }
 
     public synchronized void start() {
-        enemies.add(new Enemy(1));
-        enemies.add(new Enemy(2));
-        enemies.add(new Enemy(3));
-        enemies.add(new Enemy(4));
-        enemies.add(new Enemy(5));
+    //    enemies.add(new Enemy(1));
+    //    enemies.add(new Enemy(2));
+    //    enemies.add(new Enemy(3));
+    //    enemies.add(new Enemy(4));
+    //    enemies.add(new Enemy(5));
+        enemies.add(new Enemy(10));
+        towers.add(new TackShooter());
         running = true;
         thread = new Thread(this);
         thread.start();
+        towers.get(0).generatePoints();
     }
 
     public synchronized void stop() {
@@ -116,6 +149,7 @@ public class Game extends Canvas implements Runnable {
                 // Rita ut bilden med updaterad data
                 render();
                 delta--;
+
             }
         }
         stop();
@@ -127,19 +161,41 @@ public class Game extends Canvas implements Runnable {
     private class MyKeyListener implements KeyListener {
         @Override
         public void keyTyped(KeyEvent e) {
-
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
+            if (e.getKeyChar() == 'q' ) {
+                enemies.add(new Enemy(10));
+            }
+
+            if (e.getKeyChar() == 'r') {
+                System.out.println("Placing tack");
+                try {
+                    if (placeTower.size() > 0)
+                        placeTower.remove(0);
+                    placeTower.add(new TackShooter());
+
+                } catch (Exception q) {
+                    System.out.println("eror in adding tack");
+                }
+            }
 
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-
+            if (e.getKeyCode() == 32) {
+                try {
+                    if (!placeTower.get(0).isCollision()) {
+                        towers.add(placeTower.get(0));
+                        placeTower.remove(0);
+                    }
+                } catch (Exception q) {
+                    System.out.println("Eror in placing tower");
+                }
+            }
         }
-
     }
 
     private class MyMouseListener implements MouseListener {
@@ -153,6 +209,15 @@ public class Game extends Canvas implements Runnable {
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            try {
+                if (!placeTower.get(0).isCollision()){
+                    towers.add(placeTower.get(0));
+                    placeTower.remove(0);
+                }
+            } catch (Exception q){
+                System.out.println("Eror in placing tower");
+            }
+            frame.requestFocus();
         }
 
         @Override
@@ -172,6 +237,8 @@ public class Game extends Canvas implements Runnable {
 
         @Override
         public void mouseMoved(MouseEvent e) {
+            mouse[0] = e.getXOnScreen();
+            mouse[1] = e.getYOnScreen();
         }
     }
 }
