@@ -2,7 +2,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Projectile extends Track{
-
     private int pierce = 1;
     private int dmg = 1;
     private int speed = 3;
@@ -36,8 +35,8 @@ public class Projectile extends Track{
         g.fillPolygon(getShape());
     }
 
-    public Boolean removeProjectile(){
-        boolean remove = false;
+    public Boolean removeProjectile(){ // Förstör projectile om den far för långt.
+        boolean remove = false; // to do: om projectile har slut med pierce ska den också förstöras.
         if (distanceTraveled >= maxDistance){
             remove = true;
         }

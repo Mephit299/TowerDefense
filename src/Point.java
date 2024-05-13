@@ -12,7 +12,7 @@ public class Point {
         this.positionX = positionX;
         this.positionY = positionY;
     }
-    public ArrayList <Point> generateCirclePoints(int n, ArrayList <Point> punkter, int diameter, int x, int y){
+    public ArrayList <Point> generateCirclePoints(int n, ArrayList <Point> punkter, int diameter, int x, int y){ // Skapa en n-hörning med n punkter.
         punkter.removeAll(punkter);
         for (int i = 0; i < n; i++){
             punkter.add(new Point((int) (x + diameter/2 + diameter/2 * Math.cos(i*Math.PI/(n/2))), (int) (y + diameter/2 - diameter/2* Math.sin(i*Math.PI/(n/2)))));

@@ -1,12 +1,12 @@
 import java.awt.*;
 
-public class Enemy {
-    private int type = 1;
+public class Enemy { // Dän här klassen saknar mestadels av dess funktioner.
+    private int type = 1; // hp
     private double speed = 1;
     private int positionX = 200;
     private int positionY = 200;
     private double distanceTraveled = 0;
-    private int currentTrack = 0;
+    private int currentTrack = 0; // används i Map för att flytta fienden,
     private int diameter = 20;
     private Color[] colors = {Color.cyan, Color.red, Color.blue, Color.green, Color.yellow, Color.pink};
 

@@ -24,7 +24,7 @@ public class Map {
         this.map = map;
     }
 
-    public ArrayList<Enemy> move(ArrayList <Enemy> enemies){
+    public ArrayList<Enemy> move(ArrayList <Enemy> enemies){ // flyttar alla fiender på banan.
         for (int i = 0; i< enemies.size(); i++){
             //flytta på fienden
             enemies.get(i).setDistanceTraveled(enemies.get(i).getDistanceTraveled() + enemies.get(i).getSpeed());
@@ -64,7 +64,7 @@ public class Map {
         for (int i = 0; i < map.size(); i++)
             map.get(i).draw(g);
     }
-    public boolean mapTowerCollision(ArrayList <Point> points){
+    public boolean mapTowerCollision(ArrayList <Point> points){ // om ett torn kolliderar med banan.
         int xMin;
         int xMax;
         int yMin;

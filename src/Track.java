@@ -1,26 +1,27 @@
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class Track {
-    private int startX = 200;
-    private int startY = 200;
-    private int endX = 400;
-    private int endY = 400;
-    private int dx;
-    private int dy;
-    private double length;
-    private double angle;
-    private int trackWidth = 20;
-    private Polygon shape = new Polygon();
-    private int xMax;
-    private int xMin;
-    private int yMax;
-    private int yMin;
-    private ArrayList <Point> circle1Points = new ArrayList<Point>();
-    private ArrayList <Point> circle2Points = new ArrayList<Point>();
+    private int startX = 200; //används för att skapa en polygon.
+    private int startY = 200; //används för att skapa en polygon.
+    private int endX = 400; //används för att skapa en polygon.
+    private int endY = 400; //används för att skapa en polygon.
+    private int dx; //används för att bestämma angle
+    private int dy; //används för att bestämma angle
+    private double length; //används i map för att flyta fiender.
+    private double angle; //Rotationen av polygonen.
+    private int trackWidth = 20; //används för att skapa en polygon.
+    private Polygon shape = new Polygon(); //Cool polygon
+    private int xMax; //används för collision
+    private int xMin; //används för collision
+    private int yMax; //används för collision
+    private int yMin; //används för collision
+    private ArrayList <Point> circle1Points = new ArrayList<Point>(); //gör att track ser snyggare ut när det ritas ut
+    private ArrayList <Point> circle2Points = new ArrayList<Point>(); //gör att track ser snyggare ut när det ritas ut
     public Track (int startX, int endX, int startY, int endY){
         this.startX = startX;
         this.endX = endX;
@@ -67,10 +68,7 @@ public class Track {
         g.fillArc(endX- trackWidth,  endY - trackWidth,trackWidth*2,trackWidth*2,0,360);
     }
 
-    public void formFigure(){
-
-    //    int[] xPoints = {startX, startX, endX, endX};
-      //  int[] yPoints = {startY - trackWidth, startY + trackWidth, endY + trackWidth, endY -trackWidth};
+    public void formFigure(){ // Skapar polygonen som ritas ut och allting kolliderar med.
         int[] xPoints = {(int) (startX - trackWidth * Math.cos(angle + Math.PI/2)), (int) (startX + trackWidth * Math.cos(angle + Math.PI/2)), (int) (endX + trackWidth * Math.cos(angle + Math.PI/2)), (int) (endX - trackWidth * Math.cos(angle + Math.PI/2))};
         int[] yPoints = {(int) (startY - trackWidth * Math.sin(angle + Math.PI/2)), (int) (startY + trackWidth * Math.sin(angle + Math.PI/2)), (int) (endY + trackWidth * Math.sin(angle + Math.PI/2)), (int) (endY - trackWidth * Math.sin(angle + Math.PI/2))};
         shape.xpoints = xPoints;
@@ -80,7 +78,7 @@ public class Track {
             System.out.println("x " + xPoints[i] + "| y " + yPoints[i]); */
     }
 
-    private void xyMinMax(){
+    private void xyMinMax(){ // bestämmer vilket som är det största och minsta x/y värden
         xMax = shape.xpoints[0];
         xMin = shape.xpoints[0];
         yMax = shape.ypoints[0];

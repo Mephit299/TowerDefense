@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TransferQueue;
 
-public class Game extends Canvas implements Runnable {
+public class Game extends Canvas implements Runnable { // borde förmodligen heta Engine istället och sen Game extends Engine.
     public static int WIDTH = 1920;
     public static int HEIGHT = 1080;
     public static String title = "A ball!";
@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable {
     public int[] mouse = new int[2];
 
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g) { // rita alla object på kanvas
         g.clearRect(0, 0, getWidth(), getHeight());
         map.draw(g);
         for (int i = 0; i< enemies.size(); i++){
@@ -49,10 +49,10 @@ public class Game extends Canvas implements Runnable {
  //       ball.draw(g);
     }
 
-    private void update() {
+    private void update() { // uppdatera
         enemies = map.move(enemies);
-        try {
 
+        try {
             if (!placeTower.get(0).checkCollision(map))
             placeTower.get(0).towerTowerCollision(towers);
         } catch (Exception e){}
@@ -71,7 +71,7 @@ public class Game extends Canvas implements Runnable {
 
     private JFrame frame;
 
-    public Game() {
+    public Game() { // Gör fönstret som spelet ritas ut på och annan konfiguration. En del av grund koden vi fick av Magnus för att rita ut saker.
    //     ball = new Ball();
         try {
             icon = ImageIO.read(new File("images/icon.png"));
@@ -96,7 +96,7 @@ public class Game extends Canvas implements Runnable {
     /*
     This should not be changed...
      */
-    public void render() {
+    public void render() { // Byt till nästa frame. En del av grund koden vi fick av Magnus för att rita ut saker.
         bs = getBufferStrategy();
         if (bs == null) {
             createBufferStrategy(3);
@@ -124,7 +124,7 @@ public class Game extends Canvas implements Runnable {
         towers.get(0).generatePoints();
     }
 
-    public synchronized void stop() {
+    public synchronized void stop() { // Stänger av programmet.
         running = false;
         try {
             thread.join();
@@ -133,7 +133,7 @@ public class Game extends Canvas implements Runnable {
         }
     }
 
-    public void run() {
+    public void run() { //En del av grund koden vi fick av Magnus för att rita ut saker.
         double ns = 1000000000.0 / ups;
         double delta = 0;
         long lastTime = System.nanoTime();
@@ -165,11 +165,11 @@ public class Game extends Canvas implements Runnable {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if (e.getKeyChar() == 'q' ) {
+            if (e.getKeyChar() == 'q' ) { // debug: Skapa en ny fiende när q tryck in.
                 enemies.add(new Enemy(10));
             }
 
-            if (e.getKeyChar() == 'r') {
+            if (e.getKeyChar() == 'r') { // Keybind för att skapa en TackShooter
                 System.out.println("Placing tack");
                 try {
                     if (placeTower.size() > 0)
@@ -185,7 +185,7 @@ public class Game extends Canvas implements Runnable {
 
         @Override
         public void keyReleased(KeyEvent e) {
-            if (e.getKeyCode() == 32) {
+            if (e.getKeyCode() == 32) { // försöka fult skapa ett nytt torn
                 try {
                     if (!placeTower.get(0).isCollision()) {
                         towers.add(placeTower.get(0));
@@ -209,7 +209,7 @@ public class Game extends Canvas implements Runnable {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            try {
+            try { // försöka fult skapa ett nytt torn
                 if (!placeTower.get(0).isCollision()){
                     towers.add(placeTower.get(0));
                     placeTower.remove(0);

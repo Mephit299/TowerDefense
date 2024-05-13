@@ -26,28 +26,22 @@ public class Tower {
         generateRange();
 
     }
-    public void generateCenter(){
+    public void generateCenter(){ // centerpunkten av tornet.
         center[0] = positionX + diameter/2;
         center[1] = positionY + diameter/2;
     }
 
-    public void generatePoints() {
+    public void generatePoints() { // gör ett oktagon som cirkeln använder för att kollidera med andra objekt.
         punkter.add(new Point(0, 0));
         punkter.get(0).generateCirclePoints(8, punkter, diameter, positionX, positionY);
     }
 
-    public void generateRange(){
+    public void generateRange(){ // Gör en dekahexagon som används för att kolla om det finns fiender tillräckligt nära för att attakera.
         rangeCircle.add(new Point(0,0));
         rangeCircle.get(0).generateCirclePoints(16,rangeCircle,range,center[0] - range/2,center[1] - range/2);
     }
 
-    public ArrayList<Tower> placeTower(ArrayList<Tower> towers) {
-
-
-        return towers;
-    }
-
-    public void placingTower(Graphics g, int[] mouse) {
+    public void placingTower(Graphics g, int[] mouse) { // Skapa ett nytt torn.
         positionX = mouse[0] - 2 * diameter /3 +2;
         positionY = mouse[1] - diameter -2;
         generatePoints();
@@ -70,7 +64,7 @@ public class Tower {
 
     }
 
-    public boolean checkCollision(Map map) {
+    public boolean checkCollision(Map map) { // Kollision med kartan.
         collision = map.mapTowerCollision(punkter);
         return collision;
     }
@@ -101,7 +95,7 @@ public class Tower {
         */
     }
 
-    public void towerTowerCollision(ArrayList<Tower> towers) {
+    public void towerTowerCollision(ArrayList<Tower> towers) { // Om ett torn kolliderar med ett annat torn.
         for (int i = 0; i < towers.size(); i++) {
             for (int z = 0; z < punkter.size(); z++) {
                 if (punkter.get(z).getPositionX() > towers.get(i).positionX
@@ -116,8 +110,24 @@ public class Tower {
         collision = false;
     }
 
-    public void enemyInRange(ArrayList <Enemy> enemies, ArrayList <Projectile> projectiles){
+    public void enemyInRange(ArrayList <Enemy> enemies, ArrayList <Projectile> projectiles){ // bestämmer om det finns en fiende tillräckligt när för att attackera och gör fienden som ska attackera den som är närmast slutet av banan.
         for (int i = 0; i < enemies.size(); i++) {
+            if (rangeCircle.get(13).getPositionX() > enemies.get(i).getPositionX() // Kanske kommer att behövas ändras. Funktionen antar att det är en dekahexagon som används för range.
+                    && rangeCircle.get(6).getPositionX() < enemies.get(i).getPositionX() + enemies.get(i).getDiameter()
+                    && rangeCircle.get(13).getPositionY() > enemies.get(i).getPositionY()
+                    && rangeCircle.get(6).getPositionY() < enemies.get(i).getPositionY() + enemies.get(i).getDiameter()){
+                try{
+                    if (enemies.get(i).getCurrentTrack() >= target.getCurrentTrack()){
+                        if (enemies.get(i).getDistanceTraveled() > target.getDistanceTraveled()){
+                            target = enemies.get(i);
+                            continue;
+                        }
+                    }
+                }catch (Exception e){
+                    target = enemies.get(i);
+                    continue;
+                }
+            }
             for (int z = 0; z < rangeCircle.size(); z++) {
                 if (rangeCircle.get(z).getPositionX() > enemies.get(i).getPositionX()
                         && rangeCircle.get(z).getPositionX() < enemies.get(i).getPositionX() + enemies.get(i).getDiameter()
@@ -136,20 +146,7 @@ public class Tower {
                 }
                 System.out.println(rangeCircle.get(z).getPositionX() + " | " + rangeCircle.get(z).getPositionY() + " | " + z);
             }
-            if (rangeCircle.get(13).getPositionX() > enemies.get(i).getPositionX()
-                    && rangeCircle.get(6).getPositionX() < enemies.get(i).getPositionX() + enemies.get(i).getDiameter()
-                    && rangeCircle.get(13).getPositionY() > enemies.get(i).getPositionY()
-                    && rangeCircle.get(6).getPositionY() < enemies.get(i).getPositionY() + enemies.get(i).getDiameter()){
-                try{
-                    if (enemies.get(i).getCurrentTrack() >= target.getCurrentTrack()){
-                        if (enemies.get(i).getDistanceTraveled() > target.getDistanceTraveled()){
-                            target = enemies.get(i);
-                        }
-                    }
-                }catch (Exception e){
-                    target = enemies.get(i);
-                }
-            }
+
         }
         //collision = false;
     }
